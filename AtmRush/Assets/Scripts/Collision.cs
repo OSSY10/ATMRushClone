@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class Collision : MonoBehaviour
 {
+    AtmRush atmRush;
     [SerializeField] GameObject moneyPrefab;
-    int gateNumber;
-    int targetCount;
+    private void Start()
+    {
+        atmRush = FindObjectOfType<AtmRush>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Cube"))
@@ -14,44 +17,28 @@ public class Collision : MonoBehaviour
             if(!AtmRush.instance.cubes.Contains(other.gameObject))
             {
                 other.GetComponent<BoxCollider>().isTrigger = false;
-                other.gameObject.tag = "Untagged";
+                other.gameObject.tag = "NewCube";
                 other.gameObject.AddComponent<Collision>();
                 other.gameObject.AddComponent<Rigidbody>();
                 other.gameObject.GetComponent<Rigidbody>().isKinematic = true;  
-
                 AtmRush.instance.StackCube(other.gameObject, AtmRush.instance.cubes.Count - 1);
             }
         }
-        if (other.gameObject.CompareTag("Gate"))
+        if (other.gameObject.CompareTag("Gate") && this.gameObject.CompareTag("NewCube"))
         {
-            
-            gateNumber = other.gameObject.GetComponent<GateController>().GetGateNumber();
-            targetCount = AtmRush.instance.cubes.Count + gateNumber;
-            if(gateNumber > 0)
-            {
-                IncreaseMoneyCount();
-            }
-            else if(gateNumber < 0 && this.gameObject.CompareTag("MainCube"))
-            {
-                DecreaseMoneyCount();     
-            }
+            ChangeObject();
+        }
+        if (other.gameObject.CompareTag("Obstacle") && this.gameObject.CompareTag("NewCube"))
+        {
+            Destroy(this.gameObject);
+            AtmRush.instance.cubes.Remove(this.gameObject);
         }
     }
 
-    void IncreaseMoneyCount()
+    void ChangeObject()
     {
-        for(int i = 0; i < gateNumber; i++)
-        {
-            GameObject newMoney = Instantiate(moneyPrefab);
-            AtmRush.instance.StackCube(newMoney.gameObject, AtmRush.instance.cubes.Count - 1);
-        }
-    }
-    void DecreaseMoneyCount()
-    {
-        for(int i = AtmRush.instance.cubes.Count - 1; i >= targetCount; i--)
-        {
-            AtmRush.instance.cubes[i].SetActive(false);
-            AtmRush.instance.cubes.RemoveAt(i);
-        }
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(true);
+        StartCoroutine(AtmRush.instance.MakeObjectsBigger(1.2f));
     }
 }

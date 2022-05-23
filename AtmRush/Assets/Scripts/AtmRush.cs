@@ -35,16 +35,16 @@ public class AtmRush : MonoBehaviour
         newPos.z += 1;
         other.transform.localPosition = newPos;
         cubes.Add(other);
-        StartCoroutine(MakeObjectsBigger());
+        StartCoroutine(MakeObjectsBigger(1.5f));
     }
 
-    private IEnumerator MakeObjectsBigger()
+    public IEnumerator MakeObjectsBigger(float scaleMultiplier)
     {
         for (int i = cubes.Count - 1; i > 0; i--)
         {
             int index = i;
             Vector3 scale = new Vector3(1, 1, 1);
-            scale *= 1.5f;
+            scale *= scaleMultiplier;
 
             cubes[index].transform.DOScale(scale, 0.1f).OnComplete(() =>
             cubes[index].transform.DOScale(new Vector3(1, 1, 1), 0.1f));
@@ -56,9 +56,12 @@ public class AtmRush : MonoBehaviour
     {
         for (int i = 1; i < cubes.Count; i++)
         {
+            
             Vector3 pos = cubes[i].transform.localPosition;
             pos.x = cubes[i - 1].transform.localPosition.x;
             cubes[i].transform.DOLocalMove(pos, movementDelay);
+           
+            
         }
     }
     void MoveOrigin()
