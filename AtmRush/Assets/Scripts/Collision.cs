@@ -39,6 +39,6 @@ public class Collision : MonoBehaviour
     {
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(true);
-        StartCoroutine(AtmRush.instance.MakeObjectsBigger(1.2f));
+        StartCoroutine(AtmRush.instance.MakeObjectsBigger(1.15f));
     }
 }

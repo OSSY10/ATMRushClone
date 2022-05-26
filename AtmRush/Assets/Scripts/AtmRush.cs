@@ -32,7 +32,7 @@ public class AtmRush : MonoBehaviour
     {
         other.transform.parent = transform;
         Vector3 newPos = cubes[index].transform.localPosition;
-        newPos.z += 1;
+        newPos.z += 0.9f;
         other.transform.localPosition = newPos;
         cubes.Add(other);
         StartCoroutine(MakeObjectsBigger(1.5f));
