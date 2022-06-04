@@ -28,11 +28,7 @@ public class Collision : MonoBehaviour
         {
             ChangeObject();
         }
-        if (other.gameObject.CompareTag("Obstacle") && this.gameObject.CompareTag("NewCube"))
-        {
-            Destroy(this.gameObject);
-            AtmRush.instance.cubes.Remove(this.gameObject);
-        }
+        
     }
 
     void ChangeObject()

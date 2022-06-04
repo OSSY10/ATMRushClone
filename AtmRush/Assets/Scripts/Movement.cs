@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    public static Movement instance;
     public float swipeSpeed;
     public float moveSpeed;
     private Camera cam;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
     void Start()
     {
         cam = Camera.main;
