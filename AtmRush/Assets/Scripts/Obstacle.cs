@@ -5,7 +5,6 @@ using DG.Tweening;
 
 public class Obstacle : MonoBehaviour
 {
-    public List<GameObject> pooledObjects = new List<GameObject>();
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("NewCube"))
@@ -14,6 +13,7 @@ public class Obstacle : MonoBehaviour
             {
                 AtmRush.instance.cubes.Remove(other.gameObject);
                 Destroy(other.gameObject);
+                
             }
 
             else
@@ -24,6 +24,7 @@ public class Obstacle : MonoBehaviour
                 for (int i = crashObjIndex; i <= lastIndex; i++)
                 {
                     RemoveList(AtmRush.instance.cubes[crashObjIndex]);
+                    
                 }
             }
         }
@@ -31,7 +32,7 @@ public class Obstacle : MonoBehaviour
         else if (other.CompareTag("MainCube"))
         {
             StartCoroutine(Crash());
-            other.transform.DOMove(other.transform.position - new Vector3(0, 0, 7), 1).SetEase(Ease.OutBounce);
+            other.transform.DOMove(other.transform.position - new Vector3(0, 0, 20), 1).SetEase(Ease.OutBounce);
         }
     }
 
@@ -41,40 +42,19 @@ public class Obstacle : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         Movement.instance.moveSpeed = 6;
     }
-    GameObject GetPooledObject()
-    {
-        for(int i = 0; i< pooledObjects.Count; i++)
-        {
-            if(!pooledObjects[i].activeInHierarchy)
-            {
-                return pooledObjects[i];
-            }
-        }
-        return null;
-    }
+   
 
     public void RemoveList(GameObject crashObj)
     {
-        crashObj.SetActive(false);
-        pooledObjects.Add(crashObj);
-        AtmRush.instance.cubes.Remove(crashObj);       
-        GameObject money = GetPooledObject();
+        AtmRush.instance.cubes.Remove(crashObj);
+        crashObj.tag = "Cube";
+        crashObj.GetComponent<BoxCollider>().isTrigger = true;
+        crashObj.GetComponent<Collision>().enabled = false;
 
-        if(money != null)
-        {
-            money.tag = "Cube";
-            money.GetComponent<BoxCollider>().isTrigger = true;
-            money.GetComponent<Collision>().enabled = false;
-            money.transform.position = RandomPos(transform);
-            money.transform.rotation = Quaternion.identity;
-            
-            GameObject bounceMoney = Instantiate(money, RandomPos(transform), Quaternion.identity);
-            Destroy(bounceMoney.GetComponent<Rigidbody>());
-            bounceMoney.SetActive(true);
-            bounceMoney.transform.DOMove(bounceMoney.transform.position - new Vector3(0, 2, 0), 1).SetEase(Ease.OutBounce);
-        }
-        
-        
+        GameObject bounceMoney = Instantiate(crashObj, RandomPos(transform), Quaternion.identity);
+        Destroy(bounceMoney.GetComponent<Rigidbody>());
+        bounceMoney.transform.DOMove(bounceMoney.transform.position - new Vector3(0, 2, 0), 1).SetEase(Ease.OutBounce);
+        Destroy(crashObj);
     }
 
     public Vector3 RandomPos(Transform obstacle)
@@ -84,4 +64,7 @@ public class Obstacle : MonoBehaviour
         Vector3 posisiton = new Vector3(x, 3, obstacle.position.z + z);
         return posisiton;
     }
+
+    
+
 }

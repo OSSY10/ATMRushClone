@@ -9,6 +9,8 @@ TagManager:
   - MainCube
   - NewCube
   - Obstacle
+  - Money
+  - Diamond
   layers:
   - Default
   - TransparentFX

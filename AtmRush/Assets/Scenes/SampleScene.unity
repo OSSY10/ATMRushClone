@@ -597,7 +597,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &381158535
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1235,8 +1235,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.0699997, z: -62.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2043803300}
   - {fileID: 1283557931}
+  - {fileID: 2043803300}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1278,7 +1278,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11e91faf0efdaed44a16e9291e0c54d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moneyPrefab: {fileID: 1566590550133050955, guid: 65fe2946b4bdb9b4bb904ce8b45ab1a4, type: 3}
+  currentMoneyState: 0
+  dollar: {fileID: 1222881614}
+  diamond: {fileID: 1846806077}
 --- !u!23 &913945231
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1688,6 +1690,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8680698891921627871, guid: 933451f03487d3b4db880d5f5b484a08, type: 3}
   m_PrefabInstance: {fileID: 1003457753}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1222881614 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2132167890430735078, guid: 933451f03487d3b4db880d5f5b484a08, type: 3}
+  m_PrefabInstance: {fileID: 3031658172997406694}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1258082391
 GameObject:
   m_ObjectHideFlags: 0
@@ -1880,7 +1887,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81dedbd9293b97245bb5b056ca093532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pooledObjects: []
 --- !u!4 &1334078478 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8680698891921627871, guid: 933451f03487d3b4db880d5f5b484a08, type: 3}
@@ -2062,6 +2068,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 933451f03487d3b4db880d5f5b484a08, type: 3}
+--- !u!1 &1846806077 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3958531312555420781, guid: 933451f03487d3b4db880d5f5b484a08, type: 3}
+  m_PrefabInstance: {fileID: 3031658172997406694}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1882068307
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2249,7 +2260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81dedbd9293b97245bb5b056ca093532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pooledObjects: []
 --- !u!1001 &3031658172997406694
 PrefabInstance:
   m_ObjectHideFlags: 0
