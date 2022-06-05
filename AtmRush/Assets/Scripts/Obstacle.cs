@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class Obstacle : MonoBehaviour
 {
+    public List<GameObject> pooledObjects = new List<GameObject>();
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("NewCube"))
@@ -30,7 +31,7 @@ public class Obstacle : MonoBehaviour
         else if (other.CompareTag("MainCube"))
         {
             StartCoroutine(Crash());
-            other.transform.DOMove(other.transform.position - new Vector3(0, 0, 10), 1).SetEase(Ease.OutBounce);
+            other.transform.DOMove(other.transform.position - new Vector3(0, 0, 7), 1).SetEase(Ease.OutBounce);
         }
     }
 
@@ -40,24 +41,46 @@ public class Obstacle : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         Movement.instance.moveSpeed = 6;
     }
+    GameObject GetPooledObject()
+    {
+        for(int i = 0; i< pooledObjects.Count; i++)
+        {
+            if(!pooledObjects[i].activeInHierarchy)
+            {
+                return pooledObjects[i];
+            }
+        }
+        return null;
+    }
 
     public void RemoveList(GameObject crashObj)
     {
-        AtmRush.instance.cubes.Remove(crashObj);
-        crashObj.tag = "Cube";
-        crashObj.GetComponent<BoxCollider>().isTrigger = true;
-        crashObj.GetComponent<Collision>().enabled = false;
+        crashObj.SetActive(false);
+        pooledObjects.Add(crashObj);
+        AtmRush.instance.cubes.Remove(crashObj);       
+        GameObject money = GetPooledObject();
 
-        GameObject bounceMoney = Instantiate(crashObj, RandomPos(transform), Quaternion.identity);
-        Destroy(bounceMoney.GetComponent<Rigidbody>());
-        bounceMoney.transform.DOMove(bounceMoney.transform.position - new Vector3(0, 2, 0), 1).SetEase(Ease.OutBounce);
-        Destroy(crashObj);
+        if(money != null)
+        {
+            money.tag = "Cube";
+            money.GetComponent<BoxCollider>().isTrigger = true;
+            money.GetComponent<Collision>().enabled = false;
+            money.transform.position = RandomPos(transform);
+            money.transform.rotation = Quaternion.identity;
+            
+            GameObject bounceMoney = Instantiate(money, RandomPos(transform), Quaternion.identity);
+            Destroy(bounceMoney.GetComponent<Rigidbody>());
+            bounceMoney.SetActive(true);
+            bounceMoney.transform.DOMove(bounceMoney.transform.position - new Vector3(0, 2, 0), 1).SetEase(Ease.OutBounce);
+        }
+        
+        
     }
 
     public Vector3 RandomPos(Transform obstacle)
     {
-        float x = Random.Range(0, 3.95f);
-        float z = Random.Range(10, 15);
+        float x = Random.Range(-3, 3.1f);
+        float z = Random.Range(6, 12);
         Vector3 posisiton = new Vector3(x, 3, obstacle.position.z + z);
         return posisiton;
     }
